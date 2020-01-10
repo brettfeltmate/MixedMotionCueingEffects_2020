@@ -14,7 +14,7 @@ from klibs.KLGraphics import fill, flip, blit, clear
 from klibs.KLGraphics.KLDraw import Rectangle, Circle, SquareAsterisk, FixationCross
 from klibs.KLCommunication import any_key, message
 from klibs.KLBoundary import BoundaryInspector
-from klibs.KLBoundary import CircleBoundary
+from klibs.KLDatabase import EntryTemplate
 
 from math import pi, cos, sin
 from sdl2 import SDLK_SPACE
@@ -253,15 +253,17 @@ class MixedMotionCueingEffects_2020(klibs.Experiment):
             # print self.saccades
             # print "\n\n"
             for s in self.saccades:
-                s['trial_id'] = P.trial_number
+                trial_template = EntryTemplate('saccades')
+                s['trial_id'] = self.db.last_id_from('trials')
+                #s['trial_id'] = P.trial_number
                 s['participant_id'] = P.participant_id
-                label = 't_{0}_saccade_{1}'.format(P.trial_number, self.saccades.index(s))
-                self.db.init_entry('saccades', label)
+                #label = 't_{0}_saccade_{1}'.format(P.trial_number, self.saccades.index(s))
+                #self.db.init_entry('saccades', label)
                 for f in s:
                     if f == "end_time":
                         continue
-                    self.db.log(f, s[f])
-                self.db.insert()
+                    trial_template.log(f, s[f])
+                self.db.insert(trial_template)
         self.saccades = []
         self.target_acquired = False
 
