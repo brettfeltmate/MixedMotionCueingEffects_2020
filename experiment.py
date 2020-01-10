@@ -13,7 +13,7 @@ from klibs.KLUserInterface import key_pressed
 from klibs.KLGraphics import fill, flip, blit, clear
 from klibs.KLGraphics.KLDraw import Rectangle, Circle, SquareAsterisk, FixationCross
 from klibs.KLCommunication import any_key, message
-from klibs.KLBoundary import BoundaryInspector as bi
+from klibs.KLBoundary import BoundaryInspector
 from klibs.KLBoundary import CircleBoundary
 
 from math import pi, cos, sin
@@ -109,9 +109,10 @@ class MixedMotionCueingEffects_2020(klibs.Experiment):
             [SDLK_SPACE]  # SDL2 Keycode
         )
 
+        self.bi = BoundaryInspector()
         self.fixation_boundary = deg_to_px(3.0)  # Radius of 3.0º of visual angle
         #self.boundary = CircleBoundary(label = "drift_correct", center=P.screen_c, radius=self.fixation_boundary)
-        bi.add_boundary(label="drift_correct", bounds=[P.screen_c, self.fixation_boundary], shape="Circle")
+        self.bi.add_boundary(label="drift_correct", bounds=[P.screen_c, self.fixation_boundary], shape="Circle")
 
     def block(self):
 
