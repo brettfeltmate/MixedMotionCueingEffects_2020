@@ -37,6 +37,13 @@ saccadic_acceleration_threshold = 5000
 saccadic_motion_threshold = 0.15
 
 #########################################
+# PROJECT-SPECIFIC VARS
+#########################################
+saccade_response_cond = P.condition == 'saccade' # defaults to 'keypress' unless specified
+keypress_response_cond = (saccade_response_cond == False)
+dm_offset_size = 5 # box offset for devmode, useful for testing on smaller screens
+
+#########################################
 # Experiment Structure
 #########################################
 multi_session_project = False
@@ -71,9 +78,3 @@ datafile_ext = ".txt"
 default_participant_fields = [[unique_identifier, "participant"], "gender", "age", "handedness"]
 default_participant_fields_sf = [[unique_identifier, "participant"], "random_seed", "gender", "age", "handedness"]
 
-#########################################
-# PROJECT-SPECIFIC VARS
-#########################################
-saccade_response_cond = P.condition == 'saccade' # defaults to 'keypress' unless specified
-keypress_response_cond = (saccade_response_cond == False)
-dm_offset_size = 5 # box offset for devmode, useful for testing on smaller screens

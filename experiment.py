@@ -109,7 +109,7 @@ class MixedMotionCueingEffects_2020(klibs.Experiment):
         )
 
         self.fixation_boundary = deg_to_px(3.0)  # Radius of 3.0º of visual angle
-        bi.add_boundary("drift_correct", [P.screen_c, self.fixation_boundary], CIRCLE_BOUNDARY)
+        bi.add_boundary(label="drift_correct", bounds=[P.screen_c, self.fixation_boundary], shape=CIRCLE_BOUNDARY)
 
     def block(self):
 
