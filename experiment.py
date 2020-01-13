@@ -43,7 +43,7 @@ class MixedMotionCueingEffects_2020(klibs.Experiment):
     target_acquired = False
 
     def setup(self):
-        pass
+
         # Generate messages to be displayed during experiment
         self.err_msgs = {}
         if P.saccade_response_cond:
@@ -250,15 +250,10 @@ class MixedMotionCueingEffects_2020(klibs.Experiment):
 
     def trial_clean_up(self):
         if P.trial_id and P.saccade_response_cond:  # won't exist if trial recycled
-            # print self.saccades
-            # print "\n\n"
             for s in self.saccades:
                 trial_template = EntryTemplate('saccades')
                 s['trial_id'] = self.db.last_id_from('trials')
-                #s['trial_id'] = P.trial_number
                 s['participant_id'] = P.participant_id
-                #label = 't_{0}_saccade_{1}'.format(P.trial_number, self.saccades.index(s))
-                #self.db.init_entry('saccades', label)
                 for f in s:
                     if f == "end_time":
                         continue
