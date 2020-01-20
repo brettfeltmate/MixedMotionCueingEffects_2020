@@ -5,7 +5,7 @@ __author__ = "Brett Feltmate"
 import klibs
 from klibs import P
 from klibs.KLExceptions import TrialException
-from klibs.KLConstants import EL_SACCADE_END, EL_FALSE, NA, RC_KEYPRESS, CIRCLE_BOUNDARY, TIMEOUT
+from klibs.KLConstants import EL_SACCADE_END, EL_FALSE, NA, RC_KEYPRESS, CIRCLE_BOUNDARY, TIMEOUT, EL_GAZE_POS
 from klibs.KLUtilities import deg_to_px, flush, iterable, smart_sleep, boolean_to_logical, pump
 from klibs.KLUtilities import line_segment_len as lsl
 from klibs.KLKeyMap import KeyMap
@@ -111,7 +111,7 @@ class MixedMotionCueingEffects_2020(klibs.Experiment):
 
         self.bi = BoundaryInspector()
         self.fixation_boundary = deg_to_px(3.0)  # Radius of 3.0º of visual angle
-        #self.boundary = CircleBoundary(label = "drift_correct", center=P.screen_c, radius=self.fixation_boundary)
+
         self.bi.add_boundary(label="drift_correct", bounds=[P.screen_c, self.fixation_boundary], shape="Circle")
 
     def block(self):
@@ -268,8 +268,10 @@ class MixedMotionCueingEffects_2020(klibs.Experiment):
     def display_refresh(self, boxes=None, fixation=None, cue=None, target=None):
         # In keypress condition, after target presented, check that gaze
         # is still within fixation bounds and print message at end if not
-        if P.keypress_response_cond and self.before_target == False:
-            if lsl(self.el.gaze(), P.screen_c) > self.fixation_boundary:
+        if P.keypress_response_cond and not self.before_target:
+            gaze = self.el.get_event_gaze([EL_GAZE_POS])
+            if not self.el.within_boundary(label='drift_correct', p=gaze):
+                # if lsl(self.el.gaze(), P.screen_c) > self.fixation_boundary:
                 self.moved_eyes_during_rc = True
 
         fill()
@@ -328,7 +330,8 @@ class MixedMotionCueingEffects_2020(klibs.Experiment):
     def wait_time(self):
         # Appropriated verbatim from original code written by John Christie
         if self.before_target:
-            if lsl(self.el.gaze(), P.screen_c) > self.fixation_boundary:
+            gaze = self.el.get_event_gaze([EL_GAZE_POS])
+            if not self.el.within_boundary(label='drift_correct', p=gaze):
                 self.log_and_recycle_trial('eye')
             q = pump(True)
             if key_pressed(queue=q):
