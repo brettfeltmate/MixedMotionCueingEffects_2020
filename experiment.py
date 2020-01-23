@@ -269,6 +269,7 @@ class MixedMotionCueingEffects_2020(klibs.Experiment):
         # In keypress condition, after target presented, check that gaze
         # is still within fixation bounds and print message at end if not
         if P.keypress_response_cond and not self.before_target:
+
             gaze = self.el.get_event_gaze([EL_GAZE_POS])
             if not self.el.within_boundary(label='drift_correct', p=gaze):
                 # if lsl(self.el.gaze(), P.screen_c) > self.fixation_boundary:
@@ -330,7 +331,7 @@ class MixedMotionCueingEffects_2020(klibs.Experiment):
     def wait_time(self):
         # Appropriated verbatim from original code written by John Christie
         if self.before_target:
-            gaze = self.el.get_event_gaze([EL_GAZE_POS])
+            gaze = self.el.gaze()
             if not self.el.within_boundary(label='drift_correct', p=gaze):
                 self.log_and_recycle_trial('eye')
             q = pump(True)
